@@ -12,5 +12,5 @@ streamlit
 html5lib
 tabula_py
 Pyrebase
-scikit_learn=
+scikit_learn
 tabula
