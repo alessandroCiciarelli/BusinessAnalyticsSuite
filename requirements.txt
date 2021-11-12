@@ -15,3 +15,4 @@ Pyrebase
 scikit_learn
 tabula
 jwt
+lxml
