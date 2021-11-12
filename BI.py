@@ -17,6 +17,27 @@ import time
 import codecs
 import os
 
+########################################LOGIN	DB
+firebaseConfig = {
+  "apiKey": "AIzaSyDAeeMhMt7zKIA5ueut1_Nmp1eFq_FPty8",
+  "authDomain": "businesssuite-c396c.firebaseapp.com",
+  "databaseURL": "https://businesssuite-c396c-default-rtdb.europe-west1.firebasedatabase.app",
+  "projectId": "businesssuite-c396c",
+  "storageBucket": "businesssuite-c396c.appspot.com",
+  "messagingSenderId": "1036838554250",
+  "appId": "1:1036838554250:web:31bf46d7893d2959fcbb73",
+  "measurementId": "G-YL8CFVPSR7"
+};
+
+# Firebase Authentication
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+
+# Database
+db = firebase.database()
+storage = firebase.storage()
+
+################################################à
 timestr = time.strftime("%Y%m%d-%H%M%S")
 name = ""
 crediti_rimasti = 0
@@ -61,7 +82,11 @@ def app(dataset):
     st.markdown(get_binary_file_downloader_html('EDA2.html', 'Report'), unsafe_allow_html=True)
 
 
-		
+def rimuoviCredito():
+	st.session_state.count = st.session_state.count - 1
+	db.child(st.session_state.id).update({"Crediti":st.session_state.count})
+
+
 ############################################ANALYTIC SUITE
 def AnalyticSuite()  :
 
@@ -95,7 +120,8 @@ def AnalyticSuite()  :
 		                         
 		                         
 	    if task == "Crea Report Personalizzato":
-	    	if(st.button("Genera i Report")):
+	    	if(st.button("Genera 2 Report - Costo 1 credito")):
+	    		rimuoviCredito()
 		    	pr = ProfileReport(dataset, explorative=True, orange_mode=False)
 		    	st_profile_report(pr)
 		    	pr.to_file("EDA.html")
@@ -124,9 +150,8 @@ def AnalyticSuite()  :
 		
 	    	X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=percentuale_dati_test)
 		
-	    	col1, col2, col3 = st.columns(3)
-
-	    	if(col2.button("DIMMI QUALE E' IL MIGLIORE MODELLO PER CLASSIFICARE/STIMARE IL MIO TARGET !")):
+	    	if(st.button("Svelami il Miglior Algoritmo per i miei dati- Costo 1 credito")):
+	    		rimuoviCredito()
 	    		if(tipo_di_problema == "CLASSIFICAZIONE"):
 	    			from lazypredict.Supervised import LazyClassifier
 	    			clf = LazyClassifier(verbose=0,ignore_warnings=True, custom_metric=None)
@@ -146,7 +171,8 @@ def AnalyticSuite()  :
 	    			
 	    elif task == "Utilizza le Query SQL sui tuoi dati":
 	    	q = st.text_input("Scrivi qui dentro la tua Query", value="SELECT * FROM dataset")
-	    	if st.button("Applica Query SQL"):
+	    	if st.button("Applica Query SQL - Costo 1 credito"):
+	    		rimuoviCredito()
 	    		df = sqldf(q)
 	    		df = pd.DataFrame(df)
 	    		st.write(df)
@@ -181,7 +207,8 @@ def AnalyticSuite()  :
 	    	
 	    	X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=percentuale_dati_test)
 		
-	    	if(st.button("Creami la miglior pipeline in Python perfavore ")) :
+	    	if(st.button("Creami la miglior pipeline in Python perfavore - Costo 1 credito")):
+	    		rimuoviCredito()
 		    	if tipo=="CLASSIFICAZIONE":
 		    		from tpot import TPOTClassifier
 		    		pipeline_optimizer = TPOTClassifier()
@@ -227,7 +254,8 @@ def AnalyticSuite()  :
 	    	fileinfo = open("df_info.txt", 'r', encoding='utf-8')
 	    	source_code = fileinfo.read() 
 	    	st.text_area(label="info...", value=source_code, height=300)
-	    	if( st.button("Pulisci i miei dati")):
+	    	if( st.button("Pulisci i miei dati - Costo 1 credito")):
+	    	    	rimuoviCredito()
 	    	    	st.subheader("Ecco qualche INFO sul tuo Dataset Dopo essere stato Pulito")
 	    	    	dataset_pulito=autoclean(dataset)
 	    	    	buffer = io.StringIO() 
@@ -260,7 +288,8 @@ def ScrapeSuite():
 	
 	try:
 	    url =  st.text_input("", value='https://www.tuttosport.com/live/classifica-serie-a', max_chars=None, key=None, type='default')
-	    if url:
+	    if url and st.button("Fammi vedere le tabelle Trovate "):
+    		rimuoviCredito()
 	    	arr = ['https://', 'http://']
 	    	if any(c in url for c in arr):
 	    	    header = {
@@ -279,7 +308,7 @@ def ScrapeSuite():
 		    
 	    	    if length == 1:
 	    	        st.write("Questa Pagina Web Contiene una sola Pagina Web" )
-	    	    else: st.write("Questa Pagina Web Contiene " + str(length) + " Tabelle" )
+	    	    else: st.write("Questa Pagina Web Contiene " + str((length-1)) + " Tabelle" )
 
 		    
 		    #st.write("This webpage contains " + str(length) + " tables" )
@@ -290,41 +319,47 @@ def ScrapeSuite():
 
 	    	    st.subheader("") 
 	    	    def createList(r1, r2): 
-	    	        return [item for item in range(r1, r2+1)] 
+	    	        return [item for item in range(r1, r2)] 
 		       
 	    	    r1, r2 = 1, length
 	    	    funct = createList(r1, r2)
-		    ###### Selectbox - Selectbox - Selectbox - Selectbox - Selectbox - Selectbox - Selectbox - 
 	    	    st.markdown('### **2️⃣ Seleziona la tabella che desideri esportare **')
-	    	    ValueSelected = st.selectbox('', funct)
-	    	    st.write('Hai selezionato la Tabella #', ValueSelected)
-	    	    df1 = df[ValueSelected -1]
-	    	    if df1.empty:
-	    	        st.warning ('ℹ️ - Mannaggia! Qualcosa è andato storto..')
-	    	    else:
-	    	        df1 = df1.replace(np.nan, 'empty cell', regex=True)
-	    	        st.dataframe(df1)
+	    	    for i in funct:
+		    ###### Selectbox - Selectbox - Selectbox - Selectbox - Selectbox - Selectbox - Selectbox -
+	    	    	with st.expander("Tabella numero : " + str(i)): 
+	    	    		df1 = df[i]
+	    	    		if df1.empty:
+	    	    			st.warning ('ℹ️ - Mannaggia! Qualcosa è andato storto..')
+	    	    		else:
+	    	    			df1 = df1.replace(np.nan, 'empty cell', regex=True)
+	    	    			st.dataframe(df1)
+	    	    			try:
+    	    					rimuoviCredito()
+    	    					nome_web=csv = "web_table_"+str(i)+".csv"
+    	    					csv = df1.to_csv(index=False)
+    	    					b64 = base64.b64encode(csv.encode()).decode()
+    	    					st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
+    	    					href = f'<a href="data:file/csv;base64,{b64}" download="web_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
+    	    					st.markdown(href, unsafe_allow_html=True)
+
+
+	    	    			except ValueError:
+	    	    				pass
+	    	    #ValueSelected = st.selectbox('', funct)
+	    	    #st.write('Hai selezionato la Tabella #', ValueSelected)
+	    	    
 		        
 		    #df.columns = df.columns.str.replace(r"[()]", "_
 		    #df2 = df1.val.replace({'vte':'test'}, regex=True)
 	    	else:
 	    		st.error ("⚠️ - L'URL deve avere un formato valido, Devi iniziare con *https://* o *http://*")    
-	    else:	
-	    	st.warning ("ℹ️ - Perfavore digita prima l'URL")
+	    else:
+	    	pass	
+	    	#st.warning ("ℹ️ - Perfavore digita prima l'URL")
 	    
 	except ValueError:
 	    st.info ("ℹ️ - Non abbiamo trovato tabelle da Esportare ! 😊")
 
-	try: 
-	    csv = df1.to_csv(index=False)
-	    b64 = base64.b64encode(csv.encode()).decode()
-	    st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
-	    href = f'<a href="data:file/csv;base64,{b64}" download="web_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
-	    st.markdown(href, unsafe_allow_html=True)
-
-
-	except ValueError:
-		pass
 
 
 ###########################PDFTOCSV
@@ -333,7 +368,8 @@ def pdftocsv():
 	st.markdown("### **1️⃣ Carica il Tuo PDF **")
 	uploaded_file = st.file_uploader('Scegli un file con estensione .pdf contenente almeno una tabella', type="pdf")
 	if uploaded_file is not None:
-		if st.button("Fammi vedere Che riesci a fare.."):
+		if st.button("Fammi vedere Che riesci a fare.. - Costo 1 credito"):
+			rimuoviCredito()
 			try:
 				df = read_pdf(uploaded_file, pages='all')[0]
 				df = df.dropna()
@@ -350,8 +386,8 @@ def pdftocsv():
 #################MAIN
 
 def main():
-	st.subheader("Benvenuto "+ str(name) )
-	st.write("Ti sono rimasti " + str(crediti_rimasti) + " Crediti" )
+	st.subheader("Benvenuto "+ str(st.session_state.key) )
+	st.write("Ti sono rimasti " + str(st.session_state.count) + " Crediti" )
 	Menu = st.selectbox("Menu", ["Analizza i Tuoi File CSV o Excel - Analytic Suite", "Scarica Tabelle da Pagine web - WebScrape Siute", "Trasforma i tuoi pdf in file csv da analizzare"])
 
 
@@ -363,26 +399,9 @@ def main():
 		pdftocsv()
 
 
-########################################LOGIN	
+
 def login():
-	firebaseConfig = {
-	  "apiKey": "AIzaSyDAeeMhMt7zKIA5ueut1_Nmp1eFq_FPty8",
-	  "authDomain": "businesssuite-c396c.firebaseapp.com",
-	  "databaseURL": "https://businesssuite-c396c-default-rtdb.europe-west1.firebasedatabase.app",
-	  "projectId": "businesssuite-c396c",
-	  "storageBucket": "businesssuite-c396c.appspot.com",
-	  "messagingSenderId": "1036838554250",
-	  "appId": "1:1036838554250:web:31bf46d7893d2959fcbb73",
-	  "measurementId": "G-YL8CFVPSR7"
-	};
-
-	# Firebase Authentication
-	firebase = pyrebase.initialize_app(firebaseConfig)
-	auth = firebase.auth()
-
-	# Database
-	db = firebase.database()
-	storage = firebase.storage()
+	
 
 	
 
@@ -413,9 +432,11 @@ def login():
 	    	db.child(user['localId']).child("ID").set(user['localId'])
 	    	name = handle
 	    	crediti_rimasti = 50
-	    	st.subheader("Benvenuto " + str(name) )
-	    	st.write("Ti sono rimasti " + str(crediti_rimasti) )
 	    	st.session_state.key = name
+	    	if 'count' not in st.session_state :
+	    		st.session_state.count = crediti_rimasti
+	    	if 'id' not in st.session_state :
+	    		st.session_state.id = user['localId']
 
 
 	# Login Block
@@ -424,14 +445,18 @@ def login():
 	    name = db.child(user['localId']).child("Handle").get().val()
 	    crediti_rimasti = db.child(user['localId']).child("Crediti").get().val()
 	    st.session_state.key = name
+	    if 'count' not in st.session_state :
+	    	st.session_state.count = crediti_rimasti
+	    if 'id' not in st.session_state :
+	    		st.session_state.id = user['localId']
 
 
 
-if 'key' not in st.session_state:
+if 'key' not in st.session_state :
 	login()
 	
 
-if 'key' in st.session_state:
+if 'key' in st.session_state :
 	main()
 	
     			
