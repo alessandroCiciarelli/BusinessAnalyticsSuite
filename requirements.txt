@@ -1,0 +1,16 @@
+numpy
+TPOT
+requests
+pandasql
+pandas_profiling
+lazypredict
+sweetviz
+streamlit_pandas_profiling
+datacleaner
+pandas
+streamlit
+html5lib
+tabula_py
+Pyrebase
+scikit_learn=
+tabula
