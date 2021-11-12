@@ -14,3 +14,4 @@ tabula_py
 Pyrebase
 scikit_learn
 tabula
+jwt
