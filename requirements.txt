@@ -10,7 +10,7 @@ datacleaner
 pandas
 streamlit
 html5lib
-tabula_py
+tabula-py
 Pyrebase
 scikit_learn==0.23
 jwt
@@ -18,4 +18,3 @@ lxml
 lightgbm
 pytest
 torch
-camelot-py[cv]
