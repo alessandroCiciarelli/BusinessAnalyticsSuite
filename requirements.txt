@@ -19,3 +19,4 @@ lightgbm
 pytest
 torch
 camelot-py[all]
+camelot-py[cv]
