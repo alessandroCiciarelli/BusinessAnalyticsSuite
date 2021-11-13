@@ -18,6 +18,4 @@ lxml
 lightgbm
 pytest
 torch
-camelot
-camelot-py[all]
 camelot-py[cv]
