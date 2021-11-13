@@ -3,6 +3,7 @@ import streamlit.components.v1 as components
 from streamlit_pandas_profiling import st_profile_report
 from pandas_profiling import ProfileReport
 from sklearn.model_selection import train_test_split
+from sklearn.utils.testing import all_estimators
 import pandas as pd
 import numpy as np
 from pandasql import sqldf
