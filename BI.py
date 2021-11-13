@@ -353,7 +353,7 @@ def ScrapeSuite():
 	    	pass	
 	    	#st.warning ("ℹ️ - Perfavore digita prima l'URL")
 	    
-	except ValueError:
+	except :
 	    st.info ("ℹ️ - Non abbiamo trovato tabelle da Esportare ! 😊")
 
 
@@ -369,16 +369,23 @@ def pdftocsv():
 			try:
 				#df = read_pdf(uploaded_file, pages='all')[0]
 				tables = tabula.read_pdf(uploaded_file, pages='all')
+				j=0
 				for tabelle in tables :
-					with st.expander("Tabella numero : " + str(tabelle)):
-						df_temp = tabelle.df
-						df_temp = df_temp.dropna()
-						st.write(df_temp)
-						csv = df_temp.to_csv(index=False)
-						b64 = base64.b64encode(csv.encode()).decode()
-						st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
-						href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
-						st.markdown(href, unsafe_allow_html=True)
+					try:
+						if not tabelle.empty :
+							j=j+1
+							print(tabelle)
+							with st.expander("Tabella numero : " + str(j) ):
+								df_temp = pd.DataFrame(tabelle)
+								df_temp = df_temp.dropna()
+								st.write(df_temp)
+								csv = df_temp.to_csv(index=False)
+								b64 = base64.b64encode(csv.encode()).decode()
+								st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
+								href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table{str(j)}.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
+								st.markdown(href, unsafe_allow_html=True)
+					except ValueError:
+						pass
 			except ValueError:
 				st.info ("ℹ️ - Non abbiamo trovato tabelle da Esportare ! 😊")
 
