@@ -13,8 +13,8 @@ html5lib
 tabula_py
 Pyrebase
 scikit_learn==0.23
-tabula
 jwt
 lxml
 lightgbm
 pytest
+torch
