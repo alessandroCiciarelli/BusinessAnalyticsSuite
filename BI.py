@@ -13,7 +13,6 @@ import base64
 import pyrebase
 import tpot
 import tabula
-import camelot
 import html5lib
 import requests
 import time
@@ -371,15 +370,15 @@ def pdftocsv():
 				#df = read_pdf(uploaded_file, pages='all')[0]
 				tables = tabula.read_pdf(uploaded_file, pages='all')
 				for tabelle in tables :
-					with st.expander("Tabella numero : " + str(tabelle)
-					df_temp = tabelle.df
-					df_temp = df_temp.dropna()
-					st.write(df_temp)
-					csv = df_temp.to_csv(index=False)
-					b64 = base64.b64encode(csv.encode()).decode()
-					st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
-					href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
-					st.markdown(href, unsafe_allow_html=True)
+					with st.expander("Tabella numero : " + str(tabelle)):
+						df_temp = tabelle.df
+						df_temp = df_temp.dropna()
+						st.write(df_temp)
+						csv = df_temp.to_csv(index=False)
+						b64 = base64.b64encode(csv.encode()).decode()
+						st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
+						href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
+						st.markdown(href, unsafe_allow_html=True)
 			except ValueError:
 				st.info ("ℹ️ - Non abbiamo trovato tabelle da Esportare ! 😊")
 
