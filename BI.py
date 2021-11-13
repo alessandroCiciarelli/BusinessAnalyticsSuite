@@ -12,7 +12,7 @@ import sweetviz as sv
 import base64 
 import pyrebase
 import tpot
-from tabula.io import read_pdf
+from tabula import read_pdf
 import html5lib
 import requests
 import time
