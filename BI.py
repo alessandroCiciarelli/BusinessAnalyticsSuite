@@ -369,7 +369,7 @@ def pdftocsv():
 			rimuoviCredito()
 			try:
 				#df = read_pdf(uploaded_file, pages='all')[0]
-				tables = camelot.read_pdf('foo.pdf')
+				tables = camelot.read_pdf(uploaded_file)
 				for tabelle in tables :
 					with st.expander("Tabella numer : " + str(tabelle)):
 						df_temp = tabelle.df
