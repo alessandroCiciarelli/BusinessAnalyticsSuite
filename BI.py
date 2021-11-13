@@ -85,15 +85,16 @@ def app(dataset):
 
 
 def rimuoviCredito():
-	st.session_state.count = db.child(st.session_state.id).child("Crediti").get().val()
-	st.session_state.count = st.session_state.count - 1
-	db.child(st.session_state.id).update({"Crediti":st.session_state.count})
-	st.session_state.count = db.child(st.session_state.id).child("Crediti").get().val()
+	if(finecredito()):
+		st.session_state.count = db.child(st.session_state.id).child("Crediti").get().val()
+		st.session_state.count = st.session_state.count - 1
+		db.child(st.session_state.id).update({"Crediti":st.session_state.count})
+		st.session_state.count = db.child(st.session_state.id).child("Crediti").get().val()
 
-def finecredito()
+def finecredito():
 	cr = db.child(st.session_state.id).child("Crediti").get().val()
-	if cr >= 0 : return true
-	else return false
+	if cr > 0 : return True
+	else: return False
 
 
 ############################################ANALYTIC SUITE
@@ -137,8 +138,8 @@ def AnalyticSuite()  :
 			    	pr.to_file("EDA.html")
 			    	st.markdown(get_binary_file_downloader_html('EDA.html', 'Report'), unsafe_allow_html=True)
 			    	app(dataset)
-			else:
-				st.error('Attenzione hai finito i crediti')
+	    		else:
+		    		st.error('Attenzione hai finito i crediti')
 
 	    	
 	    elif task == "Scopri il Miglior Algoritmo di ML per i tuoi dati":
@@ -182,8 +183,8 @@ def AnalyticSuite()  :
 		    			models = pd.DataFrame(models)
 		    			models.to_csv("model.csv")
 		    			st.markdown(get_binary_file_downloader_html('model.csv', 'Rapporto Modelli Predittivi'), unsafe_allow_html=True)
-		    	else:
-				st.error('Attenzione hai finito i crediti')
+	    		else:
+	    			st.error('Attenzione hai finito i crediti')
 	    			
 	    elif task == "Utilizza le Query SQL sui tuoi dati":
 	    	q = st.text_input("Scrivi qui dentro la tua Query", value="SELECT * FROM dataset")
@@ -196,7 +197,7 @@ def AnalyticSuite()  :
 		    		df.to_csv("Dataset_query.csv")
 		    		st.markdown(get_binary_file_downloader_html('Dataset_query.csv', 'Riusltato qyery Sql IAITALIA'), unsafe_allow_html=True)
 		    	else:
-				st.error('Attenzione hai finito i crediti')
+		    		st.error('Attenzione hai finito i crediti')
 	    
 	    elif task == "Crea PipeLine ADHOC in Python per i tuoi dati":
 	    	datasetPalgo = dataset
@@ -260,7 +261,7 @@ def AnalyticSuite()  :
 			    		st.markdown(get_binary_file_downloader_html('IAITALIA_exported_pipeline.py', 'pipeline.py IAITALIA'), unsafe_allow_html=True)
 			    
 	    		else:
-				st.error('Attenzione hai finito i crediti')
+		    		st.error('Attenzione hai finito i crediti')
 		    	
 		    	
 	    elif task == "Pulisci i Miei Dati":
@@ -292,7 +293,7 @@ def AnalyticSuite()  :
 		    	    	dataset_pulito.to_csv('I_tuoi_dati_puliti_by_IAITALIA.csv', sep=',', index=False)
 		    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_puliti_by_IAITALIA.csv', 'Dati puliti by IAITALIA'), unsafe_allow_html=True)
 	    		else:
-				st.error('Attenzione hai finito i crediti')
+		    	    	st.error('Attenzione hai finito i crediti')
 
 
 
@@ -371,14 +372,11 @@ def ScrapeSuite():
 				
 			    #df.columns = df.columns.str.replace(r"[()]", "_
 			    #df2 = df1.val.replace({'vte':'test'}, regex=True)
-		    else:
-				st.error('Attenzione hai finito i crediti')
-	    	else:
-	    		st.error ("⚠️ - L'URL deve avere un formato valido, Devi iniziare con *https://* o *http://*")    
-	    else:
-	    	pass	
-	    	#st.warning ("ℹ️ - Perfavore digita prima l'URL")
-	    
+	    	
+		    	else:
+		    		st.error ("⚠️ - L'URL deve avere un formato valido, Devi iniziare con *https://* o *http://*")    
+    		else:
+	    		st.error('Attenzione hai finito i crediti')
 	except :
 	    st.info ("ℹ️ - Non abbiamo trovato tabelle da Esportare ! 😊")
 
