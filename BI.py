@@ -290,7 +290,7 @@ def ScrapeSuite():
 	
 	try:
 	    url =  st.text_input("", value='https://www.tuttosport.com/live/classifica-serie-a', max_chars=None, key=None, type='default')
-	    if url and st.button("Fammi vedere le tabelle Trovate "):
+	    if url and st.button("Cerca le tabelle nella pagina "):
     		rimuoviCredito()
 	    	arr = ['https://', 'http://']
 	    	if any(c in url for c in arr):
@@ -312,18 +312,12 @@ def ScrapeSuite():
 	    	        st.write("Questa Pagina Web Contiene una sola Pagina Web" )
 	    	    else: st.write("Questa Pagina Web Contiene " + str((length-1)) + " Tabelle" )
 
-		    
-		    #st.write("This webpage contains " + str(length) + " tables" )
-
-	    	    if st.button("Fammi vedere le tabelle Trovate"):
-	    	        st.table(df)
-	    	    else: st.empty()
 
 	    	    st.subheader("") 
 	    	    def createList(r1, r2): 
 	    	        return [item for item in range(r1, r2)] 
 		       
-	    	    r1, r2 = 1, length
+	    	    r1, r2 = 0, length
 	    	    funct = createList(r1, r2)
 	    	    st.markdown('### **2️⃣ Seleziona la tabella che desideri esportare **')
 	    	    for i in funct:
