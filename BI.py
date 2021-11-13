@@ -19,17 +19,30 @@ import time
 import codecs
 import os
 
+from st_aggrid import AgGrid, DataReturnMode, GridUpdateMode, GridOptionsBuilder
+
+
+
 ########################################LOGIN	DB
 firebaseConfig = {
-  "apiKey": "AIzaSyDAeeMhMt7zKIA5ueut1_Nmp1eFq_FPty8",
-  "authDomain": "businesssuite-c396c.firebaseapp.com",
-  "databaseURL": "https://businesssuite-c396c-default-rtdb.europe-west1.firebasedatabase.app",
-  "projectId": "businesssuite-c396c",
-  "storageBucket": "businesssuite-c396c.appspot.com",
-  "messagingSenderId": "1036838554250",
-  "appId": "1:1036838554250:web:31bf46d7893d2959fcbb73",
-  "measurementId": "G-YL8CFVPSR7"
+  "apiKey": st.secrets["apiKey"],
+  "authDomain": st.secrets["authDomain"],
+  "databaseURL": st.secrets["databaseUR"],
+  "projectId": st.secrets["projectId"],
+  "storageBucket": st.secrets["storageBucket"],
+  "messagingSenderId": st.secrets["messagingSenderId"],
+  "appId": st.secrets["appId"],
+  "measurementId": st.secrets["measurementId"]
 };
+
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # Firebase Authentication
 firebase = pyrebase.initialize_app(firebaseConfig)
@@ -115,9 +128,21 @@ def AnalyticSuite()  :
 	    colonne = list(dataset.columns)
 	    options = st.multiselect("Seleziona le colonne che vuoi usare..",colonne,colonne)
 	    dataset = dataset[options]
+	    gb = GridOptionsBuilder.from_dataframe(dataset)
+
+	    #customize gridOptions
+	    gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, aggFunc='sum', editable=True)
+	    gb.configure_grid_options(domLayout='normal')
+	    gridOptions = gb.build()
+	    
 	    try:
 	    	with st.expander("VISUALIZZA DATASET"):
-	    		st.write(dataset)
+	    		grid_response = AgGrid(
+			    dataset, 
+			    gridOptions=gridOptions,
+			    width='100%',
+			    update_mode="MODEL_CHANGED",
+			    )
 		
 	    	with st.expander("STATISICA DI BASE"):
 	    		st.write(dataset.describe())
