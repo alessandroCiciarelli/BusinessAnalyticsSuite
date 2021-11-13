@@ -246,7 +246,7 @@ def AnalyticSuite()  :
 			    		st.markdown(get_binary_file_downloader_html('IAITALIA_exported_pipeline.py', 'pipeline.py IAITALIA'), unsafe_allow_html=True)
 			    		
 			    	if tipo=="REGRESSIONE":
-			    		from tpot import TPOTRegresso
+			    		from tpot import TPOTRegressor
 			    		pipeline_optimizer = TPOTRegressor()
 			    		pipeline_optimizer = TPOTRegressor(generations=gen, population_size=pop, scoring=sel_scor, cv=5,
 						            random_state=42, verbosity=2)
