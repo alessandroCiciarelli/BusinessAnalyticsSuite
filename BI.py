@@ -35,14 +35,7 @@ firebaseConfig = {
   "measurementId": st.secrets["measurementId"]
 };
 
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+
 
 # Firebase Authentication
 firebase = pyrebase.initialize_app(firebaseConfig)
@@ -61,6 +54,14 @@ st.set_page_config(page_title="AUTO Analisi Esplorativa ( EDA ) by I.A. Italia",
 st.markdown("<center><h1> AUTO BUSINESS INTELLIGENCE <small>by I. A. ITALIA</small></h1>", unsafe_allow_html=True)
 st.write('<p style="text-align: center;font-size:15px;" > <bold>Tutti i tool di Analisi, Pulizia e Visualizzazione Dati in unico Posto <bold>  </bold><p>', unsafe_allow_html=True)
 
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 @st.cache(allow_output_mutation=True, persist=True)
 def reading_dataset():
