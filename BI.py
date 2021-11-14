@@ -530,8 +530,6 @@ def pdftocsv():
 def main():
 	st.subheader("Benvenuto "+ str(st.session_state.key) )
 	stampacredito()
-	user_verifica = auth.get_account_info(st.session_state.token)
-	st.write(user_verifica["users"][0]["emailVerified"])
 	Menu = st.selectbox("Menu", ["Analizza i Tuoi File CSV o Excel - Analytic Suite", "Scarica Tabelle da Pagine web - WebScrape Siute", "Trasforma i tuoi pdf in file csv da analizzare"])
 
 
@@ -587,6 +585,7 @@ def login():
 		    user = auth.sign_in_with_email_and_password(email,password)
 		    name = db.child(user['localId']).child("Handle").get().val()
 		    crediti_rimasti = db.child(user['localId']).child("Crediti").get().val()
+		    user_verifica = auth.get_account_info(user['idToken'])
 		    if ( user_verifica["users"][0]["emailVerified"] == True ):
 			    st.session_state.key = name
 			    if 'count' not in st.session_state :
