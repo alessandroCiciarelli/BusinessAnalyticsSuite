@@ -110,7 +110,7 @@ def finecredito():
 	if cr > 0 : return True
 	else: return False
 
-def stampacredito()
+def stampacredito():
 	cr = db.child(st.session_state.id).child("Crediti").get().val()
 	if cr >= 25 : st.success("Hai a disposizione " + str(cr) + " CREDITI ")
 	if cr > 10 and cr <25 : st.warning("Hai a disposizione " + str(cr) + " CREDITI ")
