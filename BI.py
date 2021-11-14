@@ -550,7 +550,7 @@ def login():
 	st.sidebar.title("Business Intelligence Suite")
 
 	# Authentication
-	choice = st.sidebar.selectbox('Che devi fare', ['Entrare', 'Registrazione'])
+	choice = st.sidebar.selectbox('Che devi fare', ['LOGIN', 'Registrazione'])
 
 	# Obtain User Input for email and password
 	email = st.sidebar.text_input('Inserisci la tua email')
@@ -561,36 +561,47 @@ def login():
 	# Sign up Block
 	if choice == 'Registrazione':
 	    handle = st.sidebar.text_input('Perfavore inserisci un NickName', value='')
-	    submit = st.sidebar.button('Create my account')
+	    submit = st.sidebar.button('Crea il mio Account')
 
 	    if submit:
-	    	user = auth.create_user_with_email_and_password(email, password)
-	    	st.success('Your account is created suceesfully!')
-	    	st.balloons()
-		# Sign in
-	    	user = auth.sign_in_with_email_and_password(email, password)
-	    	db.child(user['localId']).child("Handle").set(handle)
-	    	db.child(user['localId']).child("Crediti").set(50)
-	    	db.child(user['localId']).child("ID").set(user['localId'])
-	    	name = handle
-	    	crediti_rimasti = 50
-	    	st.session_state.key = name
-	    	if 'count' not in st.session_state :
-	    		st.session_state.count = crediti_rimasti
-	    	if 'id' not in st.session_state :
-	    		st.session_state.id = user['localId']
+	    	try:
+		    	user = auth.create_user_with_email_and_password(email, password)
+		    	st.success("L'Account è stato Creato Con successo")
+		    	st.warning("Per iniziare ad usare la Suite vai nella tua email e conferma l'indirizzo usato per creare l'account")
+		    	st.success("Solo dopo aver effettuato la verifica, torna sul sito ed Effettua il LOGIN, riscattando anche i tuoi primi 50 CREDITI GRATIS")
+		    	st.balloons()
+			# Sign in
+		    	user = auth.sign_in_with_email_and_password(email, password)
+		    	db.child(user['localId']).child("Handle").set(handle)
+		    	db.child(user['localId']).child("Crediti").set(50)
+		    	db.child(user['localId']).child("ID").set(user['localId'])
+		    	name = handle
+		    	link_verifica = auth.generate_email_verification_link(email, action_code_settings=None)
+		    	"""
+		    	crediti_rimasti = 50
+		    	st.session_state.key = name
+		    	if 'count' not in st.session_state :
+		    		st.session_state.count = crediti_rimasti
+		    	if 'id' not in st.session_state :
+		    		st.session_state.id = user['localId']
+		    	"""
+	    	except:
+	    		st.error("Attenzione qualcosa è andato storto, Riprova")
 
 
 	# Login Block
-	if choice == 'Entrare' and st.sidebar.button("LogIn"):
-	    user = auth.sign_in_with_email_and_password(email,password)
-	    name = db.child(user['localId']).child("Handle").get().val()
-	    crediti_rimasti = db.child(user['localId']).child("Crediti").get().val()
-	    st.session_state.key = name
-	    if 'count' not in st.session_state :
-	    	st.session_state.count = crediti_rimasti
-	    if 'id' not in st.session_state :
-	    		st.session_state.id = user['localId']
+	if choice == 'LOGIN' and st.sidebar.button("LogIn"):
+	    try:
+		    user = auth.sign_in_with_email_and_password(email,password)
+		    name = db.child(user['localId']).child("Handle").get().val()
+		    crediti_rimasti = db.child(user['localId']).child("Crediti").get().val()
+		    st.session_state.key = name
+		    if 'count' not in st.session_state :
+		    	st.session_state.count = crediti_rimasti
+		    if 'id' not in st.session_state :
+		    		st.session_state.id = user['localId']
+	    except:
+		    st.error("Attenzione qualcosa è andato storto, Riprova")
 
 
 
