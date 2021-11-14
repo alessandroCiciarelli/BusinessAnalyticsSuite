@@ -587,13 +587,16 @@ def login():
 		    user = auth.sign_in_with_email_and_password(email,password)
 		    name = db.child(user['localId']).child("Handle").get().val()
 		    crediti_rimasti = db.child(user['localId']).child("Crediti").get().val()
-		    st.session_state.key = name
-		    if 'count' not in st.session_state :
-		    	st.session_state.count = crediti_rimasti
-		    if 'id' not in st.session_state :
-		    		st.session_state.id = user['localId']
-		    if 'token' not in st.session_state :
-		    		st.session_state.token = user['idToken']
+		    if ( user_verifica["users"][0]["emailVerified"] == True ):
+			    st.session_state.key = name
+			    if 'count' not in st.session_state :
+			    	st.session_state.count = crediti_rimasti
+			    if 'id' not in st.session_state :
+			    		st.session_state.id = user['localId']
+			    if 'token' not in st.session_state :
+			    		st.session_state.token = user['idToken']
+		    else:
+			    st.error("Perfavore, verifica l'email prima di accedere")
 		    
 	    except:
 		    st.error("Attenzione qualcosa è andato storto, Riprova")
