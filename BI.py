@@ -576,8 +576,8 @@ def login():
 		    	db.child(user['localId']).child("Crediti").set(50)
 		    	db.child(user['localId']).child("ID").set(user['localId'])
 		    	name = handle
-		    	link_verifica = auth.generate_email_verification_link(email, action_code_settings=None)
-		    	st.write("link_verifica")
+		    	link_verifica = auth.send_email_verification(user['idToken'])
+		    	#st.write("link_verifica")
 		    	"""
 		    	crediti_rimasti = 50
 		    	st.session_state.key = name
