@@ -110,6 +110,11 @@ def finecredito():
 	if cr > 0 : return True
 	else: return False
 
+def stampacredito()
+	cr = db.child(st.session_state.id).child("Crediti").get().val()
+	if cr >= 25 : st.success("Hai a disposizione " + str(cr) + " CREDITI ")
+	if cr > 10 and cr <25 : st.warning("Hai a disposizione " + str(cr) + " CREDITI ")
+	if cr <10 : st.error("ATTENZIONE! Hai a disposizione " + str(cr) + " CREDITI ")
 
 ############################################ANALYTIC SUITE
 def AnalyticSuite()  :
@@ -484,7 +489,7 @@ def pdftocsv():
 
 def main():
 	st.subheader("Benvenuto "+ str(st.session_state.key) )
-	st.write("Ti sono rimasti " + str(st.session_state.count) + " Crediti" )
+	stampacredito()
 	Menu = st.selectbox("Menu", ["Analizza i Tuoi File CSV o Excel - Analytic Suite", "Scarica Tabelle da Pagine web - WebScrape Siute", "Trasforma i tuoi pdf in file csv da analizzare"])
 
 
