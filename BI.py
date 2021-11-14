@@ -96,7 +96,15 @@ def app(dataset):
     source_code = HtmlFile.read() 
     components.html(source_code,height=1200, scrolling=True)
     st.markdown(get_binary_file_downloader_html('EDA2.html', 'Report'), unsafe_allow_html=True)
+    st.success("Primo Report Generato Con Successo, per scaricarlo clicca il Link quì sopra.")
 
+def displayPDF(file):
+    # Opening file from file path
+    with open(file, "rb") as f:
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+
+    # Embedding PDF in HTML
+    pdf_display =F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
 
 def rimuoviCredito():
 	if(finecredito()):
@@ -163,12 +171,14 @@ def AnalyticSuite()  :
 	    if task == "Crea Report Personalizzato":
 	    	if(st.button("Genera 2 Report - Costo 1 credito")):
 	    		if finecredito() :
-		    		rimuoviCredito()
 			    	pr = ProfileReport(dataset, explorative=True, orange_mode=False)
 			    	st_profile_report(pr)
 			    	pr.to_file("EDA.html")
 			    	st.markdown(get_binary_file_downloader_html('EDA.html', 'Report'), unsafe_allow_html=True)
+			    	st.success("Primo Report Generato Con Successo, per scaricarlo clicca il Link quì sopra.")
 			    	app(dataset)
+			    	rimuoviCredito()
+			    	st.balloons()
 	    		else:
 		    		st.error('Attenzione hai finito i crediti')
 
@@ -197,23 +207,31 @@ def AnalyticSuite()  :
 		
 	    	if(st.button("Svelami il Miglior Algoritmo per i miei dati- Costo 1 credito")):
 	    		if finecredito() :
-	    			rimuoviCredito()
+	    			
 		    		if(tipo_di_problema == "CLASSIFICAZIONE"):
 		    			from lazypredict.Supervised import LazyClassifier
-		    			clf = LazyClassifier(verbose=0,ignore_warnings=True, custom_metric=None)
-		    			models,predictions = clf.fit(X_train, X_test, y_train, y_test)
-		    			st.write(models)
-		    			models = pd.DataFrame(models)
-		    			models.to_csv("model.csv")
-		    			st.markdown(get_binary_file_downloader_html('model.csv', 'Rapporto Modelli Predittivi'), unsafe_allow_html=True)
+		    			with st.spinner("Dacci un attimo, stiamo provando tutti gli algoritmi di Classificazione sui tuoi dati"):
+			    			clf = LazyClassifier(verbose=0,ignore_warnings=True, custom_metric=None)
+			    			models,predictions = clf.fit(X_train, X_test, y_train, y_test)
+			    			st.write(models)
+			    			models = pd.DataFrame(models)
+			    			models.to_csv("model.csv")
+			    			st.markdown(get_binary_file_downloader_html('model.csv', 'Rapporto Modelli Predittivi'), unsafe_allow_html=True)
+			    			rimuoviCredito()
+			    			st.balloons()
+			    			
 		    		if(tipo_di_problema == "REGRESSIONE"):
 		    			from lazypredict.Supervised import LazyRegressor
-		    			reg = LazyRegressor(verbose=0, ignore_warnings=True, custom_metric=None)
-		    			models, predictions = reg.fit(X_train, X_test, y_train, y_test)
-		    			st.write(models)
-		    			models = pd.DataFrame(models)
-		    			models.to_csv("model.csv")
-		    			st.markdown(get_binary_file_downloader_html('model.csv', 'Rapporto Modelli Predittivi'), unsafe_allow_html=True)
+		    			with st.spinner("Dacci un attimo, stiamo provando tutti gli algoritmi di Regressione sui tuoi dati"):
+			    			reg = LazyRegressor(verbose=0, ignore_warnings=True, custom_metric=None)
+			    			models, predictions = reg.fit(X_train, X_test, y_train, y_test)
+			    			st.write(models)
+			    			models = pd.DataFrame(models)
+			    			models.to_csv("model.csv")
+			    			st.markdown(get_binary_file_downloader_html('model.csv', 'Rapporto Modelli Predittivi'), unsafe_allow_html=True)
+			    			rimuoviCredito()
+			    			st.balloons()
+			    			
 	    		else:
 	    			st.error('Attenzione hai finito i crediti')
 	    			
@@ -221,12 +239,13 @@ def AnalyticSuite()  :
 	    	q = st.text_input("Scrivi qui dentro la tua Query", value="SELECT * FROM dataset")
 	    	if st.button("Applica Query SQL - Costo 1 credito"):
 	    		if finecredito() :
-		    		rimuoviCredito()
 		    		df = sqldf(q)
 		    		df = pd.DataFrame(df)
 		    		st.write(df)
 		    		df.to_csv("Dataset_query.csv")
 		    		st.markdown(get_binary_file_downloader_html('Dataset_query.csv', 'Riusltato qyery Sql IAITALIA'), unsafe_allow_html=True)
+		    		rimuoviCredito()
+		    		st.balloons()
 		    	else:
 		    		st.error('Attenzione hai finito i crediti')
 	    
@@ -260,36 +279,42 @@ def AnalyticSuite()  :
 		
 	    	if(st.button("Creami la miglior pipeline in Python perfavore - Costo 1 credito")):
 	    		if finecredito() :
-		    		rimuoviCredito()
+		    		
 			    	if tipo=="CLASSIFICAZIONE":
 			    		from tpot import TPOTClassifier
-			    		pipeline_optimizer = TPOTClassifier()
-			    		pipeline_optimizer = TPOTClassifier(generations=gen, population_size=pop, scoring=sel_scor, cv=5,
-						            random_state=42, verbosity=2)
-			    		pipeline_optimizer.fit(X_train, y_train)
-			    		st.write(f"Accuratezza PIPELINE : {pipeline_optimizer.score(X_test, y_test)*100} %")
-			    		pipeline_optimizer.export('IAITALIA_exported_pipeline.py')
-			    		filepipeline = open("IAITALIA_exported_pipeline.py", 'r', encoding='utf-8')
-			    		source_code = filepipeline.read() 
-			    		st.subheader("Miglior PipeLine Rilevata Sui tuoi Dati ")
-			    		my_text = st.text_area(label="Hai visto, Scriviamo anche il codice al posto tuo...", value=source_code, height=500)
+			    		with st.spinner("Dacci qualche minuto, stiamo scrivendo il Codice in Python che implementa il miglior algoritmo sui tuoi dati e ottimizzandolo con gli iperparametri. Maggiore è il numero di Generazioni e Popolazione maggiore sarà il tempo di ATTESA..."):
+				    		pipeline_optimizer = TPOTClassifier()
+				    		pipeline_optimizer = TPOTClassifier(generations=gen, population_size=pop, scoring=sel_scor, cv=5,
+								    random_state=42, verbosity=2)
+				    		pipeline_optimizer.fit(X_train, y_train)
+				    		st.write(f"Accuratezza PIPELINE : {pipeline_optimizer.score(X_test, y_test)*100} %")
+				    		pipeline_optimizer.export('IAITALIA_exported_pipeline.py')
+				    		filepipeline = open("IAITALIA_exported_pipeline.py", 'r', encoding='utf-8')
+				    		source_code = filepipeline.read() 
+				    		st.subheader("Miglior PipeLine Rilevata Sui tuoi Dati ")
+				    		my_text = st.text_area(label="Hai visto, Scriviamo anche il codice al posto tuo...", value=source_code, height=500)
 
-			    		st.markdown(get_binary_file_downloader_html('IAITALIA_exported_pipeline.py', 'pipeline.py IAITALIA'), unsafe_allow_html=True)
+				    		st.markdown(get_binary_file_downloader_html('IAITALIA_exported_pipeline.py', 'pipeline.py IAITALIA'), unsafe_allow_html=True)
+				    		rimuoviCredito()
+				    		st.balloons()
 			    		
 			    	if tipo=="REGRESSIONE":
 			    		from tpot import TPOTRegressor
-			    		pipeline_optimizer = TPOTRegressor()
-			    		pipeline_optimizer = TPOTRegressor(generations=gen, population_size=pop, scoring=sel_scor, cv=5,
-						            random_state=42, verbosity=2)
-			    		pipeline_optimizer.fit(X_train, y_train)
-			    		st.write(f"Accuratezza PIPELINE : {pipeline_optimizer.score(X_test, y_test)*100} %")
-			    		pipeline_optimizer.export('IAITALIA_exported_pipeline.py')
-			    		filepipeline = open("IAITALIA_exported_pipeline.py", 'r', encoding='utf-8')
-			    		source_code = filepipeline.read() 
-			    		st.subheader("Miglior PipeLine Rilevata Sui tuoi Dati ")
-			    		my_text = st.text_area(label="Hai visto, Scriviamo anche il codice al posto tuo...", value=source_code, height=500)
+			    		with st.spinner(" Dacci qualche minuto, stiamo scrivendo il Codice in Python che implementa il miglior algoritmo sui tuoi dati e ottimizzandolo con gli iperparametri. Maggiore è il numero di Generazioni e Popolazione maggiore sarà il tempo di ATTESA..."):
+				    		pipeline_optimizer = TPOTRegressor()
+				    		pipeline_optimizer = TPOTRegressor(generations=gen, population_size=pop, scoring=sel_scor, cv=5,
+								    random_state=42, verbosity=2)
+				    		pipeline_optimizer.fit(X_train, y_train)
+				    		st.write(f"Accuratezza PIPELINE : {pipeline_optimizer.score(X_test, y_test)*100} %")
+				    		pipeline_optimizer.export('IAITALIA_exported_pipeline.py')
+				    		filepipeline = open("IAITALIA_exported_pipeline.py", 'r', encoding='utf-8')
+				    		source_code = filepipeline.read() 
+				    		st.subheader("Miglior PipeLine Rilevata Sui tuoi Dati ")
+				    		my_text = st.text_area(label="Hai visto, Scriviamo anche il codice al posto tuo...", value=source_code, height=500)
 
-			    		st.markdown(get_binary_file_downloader_html('IAITALIA_exported_pipeline.py', 'pipeline.py IAITALIA'), unsafe_allow_html=True)
+				    		st.markdown(get_binary_file_downloader_html('IAITALIA_exported_pipeline.py', 'pipeline.py IAITALIA'), unsafe_allow_html=True)
+				    		rimuoviCredito()
+				    		st.balloons()
 			    
 	    		else:
 		    		st.error('Attenzione hai finito i crediti')
@@ -313,54 +338,62 @@ def AnalyticSuite()  :
 	    	
 	    	if( col1.button("Pulisci i miei dati da Valori nulli o corrotti - Costo 1 credito")):
 	    		if finecredito() :
-		    	    	rimuoviCredito()
-		    	    	st.subheader("Ecco qualche INFO sul tuo Dataset Dopo essere stato Pulito")
-		    	    	dataset_pulito=autoclean(dataset)
-		    	    	buffer = io.StringIO() 
-		    	    	dataset.info(buf=buffer)
-		    	    	s = buffer.getvalue() 
-		    	    	with open("df_info.txt", "w", encoding="utf-8") as f:
-		    	    	     f.write(s) 
-		    	    	fileinfo = open("df_info.txt", 'r', encoding='utf-8')
-		    	    	source_code = fileinfo.read() 
-		    	    	st.text_area(label="info dati puliti...", value=source_code, height=300)
-		    	    	dataset_pulito.to_csv('I_tuoi_dati_puliti_by_IAITALIA.csv', sep=',', index=False)
-		    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_puliti_by_IAITALIA.csv', 'Dati puliti by IAITALIA'), unsafe_allow_html=True)
+	    			with st.spinner(" Dacci qualche secondo per ripulire i tuoi dati da Valori NULL o NAN e quelli corrotti "):
+			    	    	st.subheader("Ecco qualche INFO sul tuo Dataset Dopo essere stato Pulito")
+			    	    	dataset_pulito=autoclean(dataset)
+			    	    	buffer = io.StringIO() 
+			    	    	dataset.info(buf=buffer)
+			    	    	s = buffer.getvalue() 
+			    	    	with open("df_info.txt", "w", encoding="utf-8") as f:
+			    	    	     f.write(s) 
+			    	    	fileinfo = open("df_info.txt", 'r', encoding='utf-8')
+			    	    	source_code = fileinfo.read() 
+			    	    	st.text_area(label="info dati puliti...", value=source_code, height=300)
+			    	    	dataset_pulito.to_csv('I_tuoi_dati_puliti_by_IAITALIA.csv', sep=',', index=False)
+			    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_puliti_by_IAITALIA.csv', 'Dati puliti by IAITALIA'), unsafe_allow_html=True)
+			    	    	rimuoviCredito()
+			    	    	st.balloons()
 	    		else:
 		    	    	st.error('Attenzione hai finito i crediti')
 		    	    	
 	    	if( col2.button("Normalizza i valori Numerici [MINMAXSCALER] - Costo 1 credito")):
 	    		if finecredito() :
-		    	    	datasetMM = dataset
-		    	    	numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-		    	    	datasetMM = datasetMM.select_dtypes(include=numerics)
-		    	    	datasetMM = datasetMM.dropna()
-		    	    	from sklearn.preprocessing import MinMaxScaler
-		    	    	scaler = MinMaxScaler()
-		    	    	scaled = scaler.fit_transform(datasetMM)
-		    	    	colonneMM = datasetMM.columns
-		    	    	scaled = pd.DataFrame(scaled, columns = colonneMM)
-		    	    	st.write(scaled)
-		    	    	scaled.to_csv('I_tuoi_dati_MINMAXSCALER_by_IAITALIA.csv', sep=',', index=False)
-		    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_MINMAXSCALER_by_IAITALIA.csv', 'Dati normalizzati con metodo MINMAXSCALER by IAITALIA'), unsafe_allow_html=True)
+	    			with st.spinner(" Dacci qualche secondo per Normalizzare i tuoi dati "):
+			    	    	datasetMM = dataset
+			    	    	numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+			    	    	datasetMM = datasetMM.select_dtypes(include=numerics)
+			    	    	datasetMM = datasetMM.dropna()
+			    	    	from sklearn.preprocessing import MinMaxScaler
+			    	    	scaler = MinMaxScaler()
+			    	    	scaled = scaler.fit_transform(datasetMM)
+			    	    	colonneMM = datasetMM.columns
+			    	    	scaled = pd.DataFrame(scaled, columns = colonneMM)
+			    	    	st.write(scaled)
+			    	    	scaled.to_csv('I_tuoi_dati_MINMAXSCALER_by_IAITALIA.csv', sep=',', index=False)
+			    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_MINMAXSCALER_by_IAITALIA.csv', 'Dati normalizzati con metodo MINMAXSCALER by IAITALIA'), unsafe_allow_html=True)
+			    	    	rimuoviCredito()
+			    	    	st.balloons()
 	    		else:
 		    	    	st.error('Attenzione hai finito i crediti')
 		    	    	
 		    	    	
 	    	if( col3.button("Standadizza i valori Numerici [STANDARSCALER] - Costo 1 credito")):
 	    		if finecredito() :
-		    	    	datasetSS = dataset
-		    	    	numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-		    	    	datasetSS = datasetSS.select_dtypes(include=numerics)
-		    	    	datasetSS = datasetSS.dropna()
-		    	    	from sklearn.preprocessing import MinMaxScaler
-		    	    	scaler = MinMaxScaler()
-		    	    	scaled = scaler.fit_transform(datasetSS)
-		    	    	colonneSS = datasetSS.columns
-		    	    	scaled = pd.DataFrame(scaled, columns = colonneSS)
-		    	    	st.write(scaled)
-		    	    	scaled.to_csv('I_tuoi_dati_STANDARSCALER_by_IAITALIA.csv', sep=',', index=False)
-		    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_STANDARSCALER_by_IAITALIA.csv', 'Dati normalizzati con metodo STANDARSCALER by IAITALIA'), unsafe_allow_html=True)
+	    			with st.spinner(" Dacci qualche secondo per Standardizzare i tuoi dati "):
+			    	    	datasetSS = dataset
+			    	    	numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+			    	    	datasetSS = datasetSS.select_dtypes(include=numerics)
+			    	    	datasetSS = datasetSS.dropna()
+			    	    	from sklearn.preprocessing import MinMaxScaler
+			    	    	scaler = MinMaxScaler()
+			    	    	scaled = scaler.fit_transform(datasetSS)
+			    	    	colonneSS = datasetSS.columns
+			    	    	scaled = pd.DataFrame(scaled, columns = colonneSS)
+			    	    	st.write(scaled)
+			    	    	scaled.to_csv('I_tuoi_dati_STANDARSCALER_by_IAITALIA.csv', sep=',', index=False)
+			    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_STANDARSCALER_by_IAITALIA.csv', 'Dati normalizzati con metodo STANDARSCALER by IAITALIA'), unsafe_allow_html=True)
+			    	    	rimuoviCredito()
+			    	    	st.balloons()
 	    		else:
 		    	    	st.error('Attenzione hai finito i crediti')
 
@@ -383,7 +416,7 @@ def ScrapeSuite():
 	
 	try:
 	    url =  st.text_input("", value='https://www.tuttosport.com/live/classifica-serie-a', max_chars=None, key=None, type='default')
-	    if url and st.button("Cerca le tabelle nella pagina "):
+	    if url and st.button("Cerca le tabelle nella pagina per poi scaricarle - Costo 1 credito"):
 	    	if finecredito() :
 	    		rimuoviCredito()
 		    	arr = ['https://', 'http://']
@@ -424,13 +457,17 @@ def ScrapeSuite():
 		    	    			df1 = df1.replace(np.nan, 'empty cell', regex=True)
 		    	    			st.dataframe(df1)
 		    	    			try:
-	    	    					rimuoviCredito()
 	    	    					nome_web=csv = "web_table_"+str(i)+".csv"
 	    	    					csv = df1.to_csv(index=False)
 	    	    					b64 = base64.b64encode(csv.encode()).decode()
-	    	    					st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
-	    	    					href = f'<a href="data:file/csv;base64,{b64}" download="web_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
-	    	    					st.markdown(href, unsafe_allow_html=True)
+	    	    					if st.button("Scarica tabella numero " + str(i) and finecredito()==True):
+		    	    					st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
+		    	    					href = f'<a href="data:file/csv;base64,{b64}" download="web_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
+		    	    					st.markdown(href, unsafe_allow_html=True)
+		    	    					rimuoviCredito()
+		    	    					st.balloons()
+		    	    				else:
+		    	    					st.error('Attenzione hai finito i crediti')
 
 
 		    	    			except ValueError:
@@ -457,9 +494,9 @@ def pdftocsv():
 	st.markdown("### **1️⃣ Carica il Tuo PDF **")
 	uploaded_file = st.file_uploader('Scegli un file con estensione .pdf contenente almeno una tabella', type="pdf")
 	if uploaded_file is not None:
+		displayPDF(uploaded_file)
 		if st.button("Fammi vedere Che riesci a fare.. - Costo 1 credito"):
 			if finecredito() :
-				rimuoviCredito()
 				try:
 					#df = read_pdf(uploaded_file, pages='all')[0]
 					tables = tabula.read_pdf(uploaded_file, pages='all')
@@ -475,9 +512,12 @@ def pdftocsv():
 									st.write(df_temp)
 									csv = df_temp.to_csv(index=False)
 									b64 = base64.b64encode(csv.encode()).decode()
-									st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
-									href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table{str(j)}.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
-									st.markdown(href, unsafe_allow_html=True)
+									if st.button("Scarica Tabella numero " + str(j) and finecredito()==True):
+										st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
+										href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table{str(j)}.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
+										st.markdown(href, unsafe_allow_html=True)
+									else:
+										st.error('Attenzione hai finito i crediti')
 						except ValueError:
 							pass
 				except ValueError:
