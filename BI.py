@@ -320,6 +320,35 @@ def AnalyticSuite()  :
 		    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_puliti_by_IAITALIA.csv', 'Dati puliti by IAITALIA'), unsafe_allow_html=True)
 	    		else:
 		    	    	st.error('Attenzione hai finito i crediti')
+		    	    	
+	    	if( st.button("Normalizza i valori Numerici [MINMAXSCALER] - Costo 1 credito")):
+	    		if finecredito() :
+		    	    	datasetMM = dataset
+		    	    	numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+		    	    	datasetMM = datasetMM.select_dtypes(include=numerics)
+		    	    	datasetMM = datasetMM.dropna()
+		    	    	from sklearn.preprocessing import MinMaxScaler
+		    	    	scaler = MinMaxScaler()
+		    	    	scaled = scaler.fit_transform(datasetMM)
+		    	    	scaled.to_csv('I_tuoi_dati_MINMAXSCALER_by_IAITALIA.csv', sep=',', index=False)
+		    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_MINMAXSCALER_by_IAITALIA.csv', 'Dati normalizzati con metodo MINMAXSCALER by IAITALIA'), unsafe_allow_html=True)
+	    		else:
+		    	    	st.error('Attenzione hai finito i crediti')
+		    	    	
+		    	    	
+	    	if( st.button("Standadizza i valori Numerici [STANDARSCALER] - Costo 1 credito")):
+	    		if finecredito() :
+		    	    	datasetSS = dataset
+		    	    	numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+		    	    	datasetSS = datasetSS.select_dtypes(include=numerics)
+		    	    	datasetSS = datasetSS.dropna()
+		    	    	from sklearn.preprocessing import MinMaxScaler
+		    	    	scaler = MinMaxScaler()
+		    	    	scaled = scaler.fit_transform(datasetSS)
+		    	    	scaled.to_csv('I_tuoi_dati_MINMAXSCALER_by_IAITALIA.csv', sep=',', index=False)
+		    	    	st.markdown(get_binary_file_downloader_html('I_tuoi_dati_STANDARSCALER_by_IAITALIA.csv', 'Dati normalizzati con metodo STANDARSCALER by IAITALIA'), unsafe_allow_html=True)
+	    		else:
+		    	    	st.error('Attenzione hai finito i crediti')
 
 
 
