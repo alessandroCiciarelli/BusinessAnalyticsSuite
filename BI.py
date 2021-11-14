@@ -531,7 +531,7 @@ def main():
 	st.subheader("Benvenuto "+ str(st.session_state.key) )
 	stampacredito()
 	user_verifica = auth.get_account_info(st.session_state.token)
-	st.write(user_verifica)
+	st.write(user_verifica["User"][0]["emailVerified"])
 	Menu = st.selectbox("Menu", ["Analizza i Tuoi File CSV o Excel - Analytic Suite", "Scarica Tabelle da Pagine web - WebScrape Siute", "Trasforma i tuoi pdf in file csv da analizzare"])
 
 
