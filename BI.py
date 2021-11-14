@@ -306,7 +306,7 @@ def AnalyticSuite()  :
 	    	
 	    	col1, col2, col3 = st.columns(3)
 	    	
-	    	if( col1.button("Pulisci i miei dati - Costo 1 credito")):
+	    	if( col1.button("Pulisci i miei dati da Valori nulli o corrotti - Costo 1 credito")):
 	    		if finecredito() :
 		    	    	rimuoviCredito()
 		    	    	st.subheader("Ecco qualche INFO sul tuo Dataset Dopo essere stato Pulito")
