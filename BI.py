@@ -303,7 +303,10 @@ def AnalyticSuite()  :
 	    	fileinfo = open("df_info.txt", 'r', encoding='utf-8')
 	    	source_code = fileinfo.read() 
 	    	st.text_area(label="info...", value=source_code, height=300)
-	    	if( st.button("Pulisci i miei dati - Costo 1 credito")):
+	    	
+	    	col1, col2, col3 = st.columns(3)
+	    	
+	    	if( col1.button("Pulisci i miei dati - Costo 1 credito")):
 	    		if finecredito() :
 		    	    	rimuoviCredito()
 		    	    	st.subheader("Ecco qualche INFO sul tuo Dataset Dopo essere stato Pulito")
@@ -321,7 +324,7 @@ def AnalyticSuite()  :
 	    		else:
 		    	    	st.error('Attenzione hai finito i crediti')
 		    	    	
-	    	if( st.button("Normalizza i valori Numerici [MINMAXSCALER] - Costo 1 credito")):
+	    	if( col2.button("Normalizza i valori Numerici [MINMAXSCALER] - Costo 1 credito")):
 	    		if finecredito() :
 		    	    	datasetMM = dataset
 		    	    	numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
@@ -339,7 +342,7 @@ def AnalyticSuite()  :
 		    	    	st.error('Attenzione hai finito i crediti')
 		    	    	
 		    	    	
-	    	if( st.button("Standadizza i valori Numerici [STANDARSCALER] - Costo 1 credito")):
+	    	if( col3.button("Standadizza i valori Numerici [STANDARSCALER] - Costo 1 credito")):
 	    		if finecredito() :
 		    	    	datasetSS = dataset
 		    	    	numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
