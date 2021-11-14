@@ -530,6 +530,8 @@ def pdftocsv():
 def main():
 	st.subheader("Benvenuto "+ str(st.session_state.key) )
 	stampacredito()
+	user_verifica = auth.get_account_info(st.session_state.token)
+	st.write(user_verifica)
 	Menu = st.selectbox("Menu", ["Analizza i Tuoi File CSV o Excel - Analytic Suite", "Scarica Tabelle da Pagine web - WebScrape Siute", "Trasforma i tuoi pdf in file csv da analizzare"])
 
 
@@ -543,10 +545,6 @@ def main():
 
 
 def login():
-	
-
-	
-
 	st.sidebar.title("Business Intelligence Suite")
 
 	# Authentication
@@ -578,14 +576,7 @@ def login():
 		    	name = handle
 		    	link_verifica = auth.send_email_verification(user['idToken'])
 		    	#st.write("link_verifica")
-		    	"""
-		    	crediti_rimasti = 50
-		    	st.session_state.key = name
-		    	if 'count' not in st.session_state :
-		    		st.session_state.count = crediti_rimasti
-		    	if 'id' not in st.session_state :
-		    		st.session_state.id = user['localId']
-		    	"""
+		    
 	    	except ValueError:
 	    		st.error("Attenzione qualcosa è andato storto, Riprova")
 
@@ -601,6 +592,9 @@ def login():
 		    	st.session_state.count = crediti_rimasti
 		    if 'id' not in st.session_state :
 		    		st.session_state.id = user['localId']
+		    if 'token' not in st.session_state :
+		    		st.session_state.token = user['idToken']
+		    
 	    except:
 		    st.error("Attenzione qualcosa è andato storto, Riprova")
 
