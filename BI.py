@@ -460,12 +460,13 @@ def ScrapeSuite():
 	    	    					nome_web=csv = "web_table_"+str(i)+".csv"
 	    	    					csv = df1.to_csv(index=False)
 	    	    					b64 = base64.b64encode(csv.encode()).decode()
-	    	    					if st.button("Scarica tabella numero " + str(i) and finecredito()==True):
-		    	    					st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
-		    	    					href = f'<a href="data:file/csv;base64,{b64}" download="web_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
-		    	    					st.markdown(href, unsafe_allow_html=True)
-		    	    					rimuoviCredito()
-		    	    					st.balloons()
+	    	    					if st.button("Scarica tabella numero " + str(i)):
+	    	    						if(finecredito()):
+			    	    					st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
+			    	    					href = f'<a href="data:file/csv;base64,{b64}" download="web_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
+			    	    					st.markdown(href, unsafe_allow_html=True)
+			    	    					rimuoviCredito()
+			    	    					st.balloons()
 		    	    				else:
 		    	    					st.error('Attenzione hai finito i crediti')
 
