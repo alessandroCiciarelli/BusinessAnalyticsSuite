@@ -504,8 +504,7 @@ def pdftocsv():
 										st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
 										href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table{str(j)}.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
 										st.markdown(href, unsafe_allow_html=True)
-			else:
-				st.error('Attenzione hai finito i crediti')
+		
 						except ValueError:
 							pass
 				except ValueError:
