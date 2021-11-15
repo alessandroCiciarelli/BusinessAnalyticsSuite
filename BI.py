@@ -438,7 +438,7 @@ def ScrapeSuite():
 		    	    if length == 1:
 		    	        st.write("Questa Pagina Web Contiene una sola Pagina Web" )
 		    	    else: st.write("Questa Pagina Web Contiene " + str((length-1)) + " Tabelle" )
-
+		    	    st.balloons()
 
 		    	    st.subheader("") 
 		    	    def createList(r1, r2): 
@@ -459,16 +459,14 @@ def ScrapeSuite():
 		    	    			try:
 	    	    					nome_web=csv = "web_table_"+str(i)+".csv"
 	    	    					csv = df1.to_csv(index=False)
-	    	    					b64 = base64.b64encode(csv.encode()).decode()
-	    	    					if st.button("Scarica tabella numero " + str(i)):
-	    	    						if(finecredito()):
-			    	    					st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
-			    	    					href = f'<a href="data:file/csv;base64,{b64}" download="web_table.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
-			    	    					st.markdown(href, unsafe_allow_html=True)
-			    	    					rimuoviCredito()
-			    	    					st.balloons()
-	    	    						else:
-			    	    					st.error('Attenzione hai finito i crediti')
+	    	    					b64 = base64.b64encode(csv.encode()).decode()	
+	    	    					st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
+	    	    					href = f'<a href="data:file/csv;base64,{b64}" download="web_table.csv">** Clicca Qui per Scaricare la Tabella! 🎉**</a>'
+	    	    					st.markdown(href, unsafe_allow_html=True)
+	    	    					
+	    	    					
+	    	else:
+	    		st.error('Attenzione hai finito i crediti')
 
 
 		    	    			except ValueError:
@@ -514,12 +512,11 @@ def pdftocsv():
 									csv = df_temp.to_csv(index=False)
 									b64 = base64.b64encode(csv.encode()).decode()
 									if st.button("Scarica Tabella numero " + str(j)):
-										if finecredito() :
-											st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
-											href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table{str(j)}.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
-											st.markdown(href, unsafe_allow_html=True)
-										else:
-											st.error('Attenzione hai finito i crediti')
+										st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
+										href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table{str(j)}.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
+										st.markdown(href, unsafe_allow_html=True)
+			else:
+				st.error('Attenzione hai finito i crediti')
 						except ValueError:
 							pass
 				except ValueError:
