@@ -483,7 +483,7 @@ def ScrapeSuite():
 		    		st.error ("⚠️ - L'URL deve avere un formato valido, Devi iniziare con *https://* o *http://*")    
     		else:
 	    		st.error('Attenzione hai finito i crediti')
-	except :
+	except ValueError:
 	    st.info ("ℹ️ - Non abbiamo trovato tabelle da Esportare ! 😊")
 
 
