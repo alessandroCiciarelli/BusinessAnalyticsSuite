@@ -467,8 +467,8 @@ def ScrapeSuite():
 			    	    					st.markdown(href, unsafe_allow_html=True)
 			    	    					rimuoviCredito()
 			    	    					st.balloons()
-		    	    				else:
-		    	    					st.error('Attenzione hai finito i crediti')
+	    	    						else:
+			    	    					st.error('Attenzione hai finito i crediti')
 
 
 		    	    			except ValueError:
@@ -513,12 +513,13 @@ def pdftocsv():
 									st.write(df_temp)
 									csv = df_temp.to_csv(index=False)
 									b64 = base64.b64encode(csv.encode()).decode()
-									if st.button("Scarica Tabella numero " + str(j) and finecredito()==True):
-										st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
-										href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table{str(j)}.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
-										st.markdown(href, unsafe_allow_html=True)
-									else:
-										st.error('Attenzione hai finito i crediti')
+									if st.button("Scarica Tabella numero " + str(j)):
+										if finecredito() :
+											st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
+											href = f'<a href="data:file/csv;base64,{b64}" download="PDF_table{str(j)}.csv">** Clicca Qui per Scaricare il Tuo Dataset! 🎉**</a>'
+											st.markdown(href, unsafe_allow_html=True)
+										else:
+											st.error('Attenzione hai finito i crediti')
 						except ValueError:
 							pass
 				except ValueError:
