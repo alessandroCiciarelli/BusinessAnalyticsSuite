@@ -463,20 +463,9 @@ def ScrapeSuite():
 	    	    					st.markdown('### ** ⬇️ Scarica la tabella in formato csv **')
 	    	    					href = f'<a href="data:file/csv;base64,{b64}" download="web_table.csv">** Clicca Qui per Scaricare la Tabella! 🎉**</a>'
 	    	    					st.markdown(href, unsafe_allow_html=True)
-	    	    					
-	    	    					
-	    	else:
-	    		st.error('Attenzione hai finito i crediti')
-
-
+	    	    				
 		    	    			except ValueError:
 		    	    				pass
-		    	    #ValueSelected = st.selectbox('', funct)
-		    	    #st.write('Hai selezionato la Tabella #', ValueSelected)
-		    	    
-				
-			    #df.columns = df.columns.str.replace(r"[()]", "_
-			    #df2 = df1.val.replace({'vte':'test'}, regex=True)
 	    	
 		    	else:
 		    		st.error ("⚠️ - L'URL deve avere un formato valido, Devi iniziare con *https://* o *http://*")    
