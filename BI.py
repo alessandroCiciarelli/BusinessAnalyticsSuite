@@ -51,7 +51,7 @@ name = ""
 crediti_rimasti = 0
 st.set_page_config(page_title="AUTO Analisi Esplorativa ( EDA ) by I.A. Italia", page_icon="🔍", layout='wide', initial_sidebar_state='auto')
 
-st.markdown("<center><h1> AUTO BUSINESS INTELLIGENCE <small>by I. A. ITALIA</small></h1>", unsafe_allow_html=True)
+st.markdown("<center><h1> Italian Intelligence Analytic Suite <small><br> Powered by I. A. ITALIA </small></h1>", unsafe_allow_html=True)
 st.write('<p style="text-align: center;font-size:15px;" > <bold>Tutti i tool di Analisi, Pulizia e Visualizzazione Dati in unico Posto <bold>  </bold><p>', unsafe_allow_html=True)
 
 hide_st_style = """
@@ -127,7 +127,7 @@ def stampacredito():
 ############################################ANALYTIC SUITE
 def AnalyticSuite()  :
 
-	uploaded_file = st.file_uploader("Perfavore inserisci quì il file di tipo : xlsx, csv", type=["csv"])
+	uploaded_file = st.file_uploader("Perfavore inserisci quì il file di tipo csv, usando come separatore la virgola!", type=["csv"])
 
 	st.sidebar.subheader("") 
 	st.sidebar.subheader("") 
