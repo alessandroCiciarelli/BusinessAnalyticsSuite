@@ -49,7 +49,7 @@ firebaseConfig = {
 
 
 # Firebase Authentication
-firebase = Firebase.initialize_app(firebaseConfig)
+firebase = Firebase(firebaseConfig)
 auth = firebase.auth()
 
 # Database
