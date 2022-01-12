@@ -1,4 +1,5 @@
 cffi==1.14.6
+pycryptodome
 Pyrebase
 datacleaner==0.1.5
 TPOT==0.11.7
