@@ -1,5 +1,5 @@
 cffi
-Pyrebase==3.0.27
+Pyrebase
 datacleaner==0.1.5
 TPOT==0.11.7
 pandasql==0.7.3
