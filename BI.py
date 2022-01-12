@@ -3,7 +3,11 @@ import streamlit.components.v1 as components
 from streamlit_pandas_profiling import st_profile_report
 from pandas_profiling import ProfileReport
 from sklearn.model_selection import train_test_split
-from sklearn.testing import all_estimators
+import sklearn
+estimators = sklearn.utils.all_estimators(type_filter=None)
+for name, class_ in estimators:
+    if hasattr(class_, 'predict_proba'):
+	pass
 from sklearn.utils.testing import ignore_warnings
 import pandas as pd
 import numpy as np
