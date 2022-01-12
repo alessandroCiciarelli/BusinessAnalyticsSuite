@@ -1,4 +1,4 @@
-firebase==3.0.1
+pyrebase
 datacleaner==0.1.5
 requests==2.24.0
 pandas_profiling==3.1.0
