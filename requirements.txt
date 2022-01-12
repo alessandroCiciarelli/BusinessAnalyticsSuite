@@ -20,3 +20,4 @@ torch
 streamlit-aggrid
 firebase
 python-jwt
+google-cloud-storage
