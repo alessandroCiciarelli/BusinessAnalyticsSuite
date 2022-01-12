@@ -11,7 +11,7 @@ pandas
 streamlit
 html5lib
 tabula-py
-Pyrebase
+pyrebase
 scikit_learn==0.23
 jwt
 lxml
@@ -19,4 +19,4 @@ lightgbm
 pytest
 torch
 streamlit-aggrid
-crypto
+firebase
