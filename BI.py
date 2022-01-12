@@ -10,7 +10,6 @@ import numpy as np
 from pandasql import sqldf
 import sweetviz as sv
 import base64 
-from pyrebase import pyrebase
 from firebase import Firebase
 import tpot
 import tabula
