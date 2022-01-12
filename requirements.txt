@@ -5,7 +5,7 @@ pandasql==0.7.3
 pandas_profiling
 requests==2.11.1
 html5lib==1.1
-pandas==1.2.0
+pandas
 tabula_py==2.3.0
 streamlit
 sweetviz==2.1.3
