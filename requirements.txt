@@ -19,4 +19,4 @@ lightgbm
 pytest
 torch
 streamlit-aggrid
-pycrypto
+crypto
