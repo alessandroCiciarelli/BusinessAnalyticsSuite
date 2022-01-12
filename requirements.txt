@@ -20,4 +20,7 @@ torch
 streamlit-aggrid
 firebase
 python-jwt
-google-cloud-storage
+gcloud
+sseclient
+pycrypto
+requests-toolbelt
