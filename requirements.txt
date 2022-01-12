@@ -15,3 +15,4 @@ tabula_py==2.3.0
 scikit_learn==0.23
 tabula==1.0.5
 python-jwt
+google-cloud-storage
