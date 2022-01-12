@@ -1,6 +1,6 @@
 Pyrebase==3.0.27
 datacleaner==0.1.5
-requests==2.24.0
+requests
 pandas_profiling==3.1.0
 streamlit==1.1.0
 html5lib==1.1
