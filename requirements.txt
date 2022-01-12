@@ -19,3 +19,4 @@ numpy
 lazypredict
 scikit-learn
 tabula
+lxml
