@@ -19,3 +19,4 @@ pytest
 torch
 streamlit-aggrid
 firebase
+python-jwt
