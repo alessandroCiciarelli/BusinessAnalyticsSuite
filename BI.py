@@ -23,16 +23,7 @@ from st_aggrid import AgGrid, DataReturnMode, GridUpdateMode, GridOptionsBuilder
 
 
 ########################################LOGIN	DB
-firebaseConfig = {
-  "apiKey": st.secrets["apiKey"],
-  "authDomain": st.secrets["authDomain"],
-  "databaseURL": st.secrets["databaseUR"],
-  "projectId": st.secrets["projectId"],
-  "storageBucket": st.secrets["storageBucket"],
-  "messagingSenderId": st.secrets["messagingSenderId"],
-  "appId": st.secrets["appId"],
-  "measurementId": st.secrets["measurementId"]
-};
+
 
 firebaseConfig = {
   "apiKey": "AIzaSyDAeeMhMt7zKIA5ueut1_Nmp1eFq_FPty8",
