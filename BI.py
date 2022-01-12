@@ -5,13 +5,12 @@ from pandas_profiling import ProfileReport
 from sklearn.model_selection import train_test_split
 import sklearn
 estimators = sklearn.utils.all_estimators(type_filter=None)
-from sklearn.utils.testing import ignore_warnings
 import pandas as pd
 import numpy as np
 from pandasql import sqldf
 import sweetviz as sv
 import base64 
-import pyrebase
+from pyrebase import pyrebase
 import tpot
 import tabula
 import html5lib
