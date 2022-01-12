@@ -11,6 +11,7 @@ from pandasql import sqldf
 import sweetviz as sv
 import base64 
 from pyrebase import pyrebase
+from firebase import Firebase
 import tpot
 import tabula
 import html5lib
@@ -49,7 +50,7 @@ firebaseConfig = {
 
 
 # Firebase Authentication
-firebase = pyrebase.initialize_app(firebaseConfig)
+firebase = Firebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
 # Database
