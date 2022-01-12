@@ -35,6 +35,17 @@ firebaseConfig = {
   "measurementId": st.secrets["measurementId"]
 };
 
+firebaseConfig = {
+  "apiKey": "AIzaSyDAeeMhMt7zKIA5ueut1_Nmp1eFq_FPty8",
+  "authDomain": "businesssuite-c396c.firebaseapp.com",
+  "databaseURL": "https://businesssuite-c396c-default-rtdb.europe-west1.firebasedatabase.app",
+  "projectId": "businesssuite-c396c",
+  "storageBucket": "businesssuite-c396c.appspot.com",
+  "messagingSenderId": "1036838554250",
+  "appId": "1:1036838554250:web:31bf46d7893d2959fcbb73",
+  "measurementId": "G-YL8CFVPSR7"
+};
+
 
 
 # Firebase Authentication
