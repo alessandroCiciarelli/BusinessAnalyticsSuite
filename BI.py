@@ -5,7 +5,7 @@ from pandas_profiling import ProfileReport
 from sklearn.model_selection import train_test_split
 import sklearn
 estimators = sklearn.utils.all_estimators(type_filter=None)
-
+from google.cloud import storage
 from sklearn.utils.testing import ignore_warnings
 import pandas as pd
 import numpy as np
