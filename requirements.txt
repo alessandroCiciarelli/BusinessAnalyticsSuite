@@ -22,5 +22,5 @@ firebase
 python-jwt
 gcloud
 sseclient
-pycrypto
+pycryptodome
 requests-toolbelt
